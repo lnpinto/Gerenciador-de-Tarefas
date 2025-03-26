@@ -14,15 +14,19 @@ A aplicação deve permitir que os usuários realizem as seguintes operações:
 ✅ Cadastro de Tarefas
 Cada tarefa deve conter: título, descrição, data limite (deadline) e status (Pendente, Em andamento, Concluído).
 O sistema deve garantir que nenhuma tarefa seja cadastrada com data limite no passado.
+
 ✅ Gerenciamento e Filtragem
 Exibir todas as tarefas cadastradas.
 Permitir filtrar tarefas por status.
 Listar as tarefas ordenadas por data limite.
+
 ✅ Validação e Qualidade dos Dados
 Evitar que tarefas com títulos muito curtos sejam cadastradas.
 Garantir que nenhuma tarefa seja salva sem um status válido.
+
 ✅ Notificações Inteligentes
 O sistema deve alertar automaticamente o usuário quando uma tarefa estiver próxima da data limite.
+
 
 🛠 Tecnologias e Conceitos
 
