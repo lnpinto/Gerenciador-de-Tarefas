@@ -1,4 +1,4 @@
-package br.com.t1321.projeto.entities;
+package br.com.t1321.projeto.classes;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -33,7 +33,7 @@ public class Tarefa {
         return status;
     }
 
-    public Tarefa(int id, String titulo, String descricao, LocalDate dataLimite, Status status) {
+    public Tarefa(String titulo, String descricao, LocalDate dataLimite, Status status) {
         this.id = contador++;
         this.titulo = titulo;
         this.descricao = Objects.requireNonNull(descricao, "Preencha o campo da descrição");

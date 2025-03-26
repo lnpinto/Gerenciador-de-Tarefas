@@ -1,5 +1,19 @@
 package br.com.t1321.projeto;
 
+import br.com.t1321.projeto.interfaces.Notificador;
+import br.com.t1321.projeto.interfaces.TarefaRepository;
+import br.com.t1321.projeto.classes.Status;
+import br.com.t1321.projeto.implementacoes.NotificadorTarefas;
+import br.com.t1321.projeto.implementacoes.TarefaRepositoryMemoria;
+import br.com.t1321.projeto.classes.Tarefa;
+
+import java.time.DateTimeException;
+import java.time.LocalDate;
+
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Scanner;
+
 class GerenciadorTarefasApp {
     private final TarefaRepository repository = new TarefaRepositoryMemoria();
     private final Notificador notificador = new NotificadorTarefas(repository);
@@ -58,7 +72,7 @@ class GerenciadorTarefasApp {
         String descricao = scanner.nextLine();
 
         LocalDate dataLimite = lerDataLimite();
-        StatusTarefa status = lerStatus();
+        Status status = lerStatus();
 
         try {
             Tarefa novaTarefa = new Tarefa(titulo, descricao, dataLimite, status);
@@ -87,17 +101,17 @@ class GerenciadorTarefasApp {
         }
     }
 
-    private StatusTarefa lerStatus() {
+    private Status lerStatus() {
         while (true) {
             System.out.println("Status disponíveis:");
-            for (StatusTarefa status : StatusTarefa.values()) {
+            for (Status status : Status.values()) {
                 System.out.println(status.ordinal() + 1 + ". " + status);
             }
             System.out.print("Escolha o status: ");
 
             try {
                 int opcao = Integer.parseInt(scanner.nextLine());
-                return StatusTarefa.values()[opcao - 1];
+                return Status.values()[opcao - 1];
             } catch (Exception e) {
                 System.out.println("Opção inválida!");
             }
@@ -106,12 +120,18 @@ class GerenciadorTarefasApp {
 
     private void listarTodasTarefas() {
         System.out.println("\n=== Lista de Todas as Tarefas ===");
-        repository.listarTodas().forEach(this::imprimirTarefa);
+        List<Tarefa> tarefas = repository.listarTodas();
+
+        if (tarefas.isEmpty()) {
+            System.out.println("Nenhuma tarefa cadastrada");
+        } else {
+            tarefas.forEach(this::imprimirTarefa);
+        }
     }
 
     private void filtrarTarefasPorStatus() {
         System.out.println("\n=== Filtrar Tarefas por Status ===");
-        StatusTarefa status = lerStatus();
+        Status status = lerStatus();
 
         System.out.println("\nTarefas com status '" + status + "':");
         repository.filtrarPorStatus(status).forEach(this::imprimirTarefa);
@@ -123,11 +143,24 @@ class GerenciadorTarefasApp {
     }
 
     private void imprimirTarefa(Tarefa tarefa) {
+        System.out.println("\n---------------------------------");
         System.out.println("\nTarefa #" + tarefa.getId());
         System.out.println("Título: " + tarefa.getTitulo());
         System.out.println("Descrição: " + tarefa.getDescricao());
         System.out.println("Data Limite: " + tarefa.getDataLimite());
         System.out.println("Status: " + tarefa.getStatus());
-        System.out.println("Dias restantes: " + ChronoUnit.DAYS.between(LocalDate.now(), tarefa.getDataLimite()));
+        //System.out.println("Dias restantes: " + ChronoUnit.DAYS.between(LocalDate.now(), tarefa.getDataLimite()));
+
+        long diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(), tarefa.getDataLimite());
+        String situacaoPrazo;
+        if (diasRestantes < 0) {
+            situacaoPrazo = "ATRASADA (" + (-diasRestantes) + "dias)";
+        } else if (diasRestantes == 0) {
+            situacaoPrazo = "ÚLTIMO DIA!";
+        } else {
+            situacaoPrazo = "Faltam " + diasRestantes + " dias";
+        }
+        System.out.println("Situação do prazo: " + situacaoPrazo);
+        System.out.println("---------------------------------");
     }
 }
