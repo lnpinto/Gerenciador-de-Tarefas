@@ -2,65 +2,10 @@ package br.com.t1321.projeto.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public abstract class Tarefa {
-    private String titulo;
-    private String descricao;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataLimite;
-    private Enum status;
-
-    public Tarefa(Enum status, LocalDateTime dataLimite, LocalDateTime dataCriacao, String descricao, String titulo) {
-        this.status = status;
-        this.dataLimite = dataLimite;
-        this.dataCriacao = dataCriacao;
-        this.descricao = descricao;
-        this.titulo = titulo;
-    }
-
-    public Enum getStatus() {
-        return status;
-    }
-
-    public void setStatus(Enum status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getDataLimite() {
-        return dataLimite;
-    }
-
-    public void setDataLimite(LocalDateTime dataLimite) {
-        this.dataLimite = dataLimite;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-}
-// Classe que representa uma tarefa
-public static class Tarefa {
+public class Tarefa {
     private final String titulo;
     private final String descricao;
     private final LocalDate dataLimite;
@@ -80,15 +25,24 @@ public static class Tarefa {
         }
     }
 
-    // Getters
-    public String getTitulo() { return titulo; }
-    public String getDescricao() { return descricao; }
-    public LocalDate getDataLimite() { return dataLimite; }
-    public Status getStatus() { return status; }
+    public String getTitulo() {
+        return titulo;
+    }
 
-    // Setters (apenas para status que pode mudar)
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public LocalDate getDataLimite() {
+        return dataLimite;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
     public void setStatus(Status status) {
-        this.status = Objects.requireNonNull(status);
+        this.status = status;
     }
 
     @Override
